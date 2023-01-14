@@ -1,124 +1,49 @@
 package src;
+import java.util.*;
+public class Calender {
+    public static void main(String a[]) {
+        String [][] calendar = new String[49][8];
+        String [] days = {"SUN","MON","TUE","WED","THU","FRI","SAT"};
+        String [] times = {"12","1","2","3","4","5","6","7","8","9","10","11"};
+        String [] thirtyMinInterval = {"00","30"};
+        String [] ampm = {"am","pm"};
 
-import java.io.*;
-import java.util.Scanner;
+        for (String [] arr: calendar) {
+            Arrays.fill(arr,"E");
+        }
 
-public class Calender
-{
-
-    public static void main(String a[])
-    {
-
-        // Reading input by creating object of Scanner class
-        Scanner sc = new Scanner(System.in);
-
-        // Display message only
-        System.out.print("Enter the year : ");
-
-        // Reading integer input value
-        int yy = sc.nextInt();
-
-        // Display message only
-        System.out.print("Enter month : ");
-
-        // Reading integer input value
-        int mm = sc.nextInt();
-
-        //System.out.print("Enter week : ");
-
-        // Reading integer input value
-        //int ww = sc.nextInt();
-
-
-        int d = 1;
-        int m = 1;
-        int y = 1;
-        int dy = 1;
-
-        // Storing data and months as input
-        String day[] = { "SUN", "MON", "TUE", "WED",
-                "THU", "FRI", "SAT" };
-        String month[]
-                = { "JANUARY", "FEBRUARY", "MARCH",
-                "APRIL",   "MAY",      "JUNE",
-                "JULY",    "AUGUST",   "SEPTEMBER",
-                "OCTOBER", "NOVEMBER", "DECEMBER" };
-
-        // Custom array as input
-        int ar[] = { 31, 29, 31, 30, 31, 30,
-                31, 31, 30, 31, 30, 31 };
-
-        // Till condition holds true
-        while (true) {
-
-            if (d == 1 && m == mm && y == yy) {
-                break;
-            }
-
-            if (y % 4 == 0 && y % 100 != 0
-                    || y % 100 == 0) {
-                ar[1] = 29;
-            }
-
-            else {
-                ar[1] = 28;
-            }
-            dy++;
-            d++;
-
-            if (d > ar[m - 1]) {
-                m++;
-                d = 1;
-            }
-
-            if (m > 12) {
-                m = 1;
-                y++;
-            }
-
-            if (dy == 7) {
-                dy = 0;
+        for (int i = 0; i <= days.length; i++) {
+            if (i == 0) {
+                calendar[0][i] = "\t";
+            } else {
+                calendar[0][i] = days[i - 1];
             }
         }
 
-        int c = dy;
-
-        if (y % 4 == 0 && y % 100 != 0 || y % 400 == 0) {
-            ar[1] = 29;
-        }
-        else {
-            ar[1] = 28;
+        for (String [] arr: calendar) {
+            for (String element: arr) {
+                System.out.print(element+"\t\t");
+            }
+            System.out.println("");
         }
 
-        // Print the desired month of input year
-        System.out.println("MONTH:" + month[mm - 1]);
-
-        for (int k = 0; k < 7; k++) {
-            System.out.print("   " + day[k]);
-        }
-
-        System.out.println();
-
-        for (int j = 1; j <= (ar[mm - 1] + dy); j++) {
-            if (j > 6) {
-                dy = dy % 6;
+        /*
+        System.out.print("\t\t");
+        for (String day: days) {
+            System.out.print(day+"\t\t");
+            if(day == "SAT"){
+                System.out.print("\n");
             }
         }
 
-        int spaces = dy;
-        if (spaces < 0)
-            spaces = 6;
-
-        // Printing the calendar
-        for (int i = 0; i < spaces; i++)
-            System.out.print("      ");
-        for (int i = 1; i <= ar[mm - 1]; i++) {
-            System.out.printf(" %4d ", i);
-
-            if (((i + spaces) % 7 == 0)
-                    || (i == ar[mm - 1]))
-                System.out.println();
+        for (int i = 0; i < 2; i++) {
+            for (String time : times) {
+                System.out.print(time + ":" + thirtyMinInterval[0] +ampm[i]+ "\n");
+                System.out.print(time + ":" + thirtyMinInterval[1] +ampm[i]+ "\n");
+            }
         }
+
+         */
     }
 }
 
