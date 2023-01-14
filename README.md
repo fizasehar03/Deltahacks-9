@@ -1,6 +1,6 @@
 # Deltahacks-9
 
-Names: Fiza Sehar, 
+Names: Fiza Sehar, Ghena Hatoum, James Nick, Rooaa Shanshal
 
 
 Project description: 
