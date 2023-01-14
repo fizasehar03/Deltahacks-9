@@ -8,6 +8,8 @@ public class Calender {
         String [] thirtyMinInterval = {"00","30"};
         String [] ampm = {"am","pm"};
 
+        ArrayList<String> timeConstructed = new ArrayList<String>();
+
         for (String [] arr: calendar) {
             Arrays.fill(arr,"E");
         }
@@ -20,6 +22,19 @@ public class Calender {
             }
         }
 
+        for (int i = 0; i < 2; i++) {
+            for (String time : times) {
+                timeConstructed.add(time + ":" + thirtyMinInterval[0] +ampm[i]);
+                timeConstructed.add(time + ":" + thirtyMinInterval[1] +ampm[i]);
+            }
+        }
+
+        int index = 1;
+        for (String time: timeConstructed) {
+            calendar[index][0] = time;
+            index++;
+        }
+
         for (String [] arr: calendar) {
             for (String element: arr) {
                 System.out.print(element+"\t\t");
@@ -27,23 +42,6 @@ public class Calender {
             System.out.println("");
         }
 
-        /*
-        System.out.print("\t\t");
-        for (String day: days) {
-            System.out.print(day+"\t\t");
-            if(day == "SAT"){
-                System.out.print("\n");
-            }
-        }
-
-        for (int i = 0; i < 2; i++) {
-            for (String time : times) {
-                System.out.print(time + ":" + thirtyMinInterval[0] +ampm[i]+ "\n");
-                System.out.print(time + ":" + thirtyMinInterval[1] +ampm[i]+ "\n");
-            }
-        }
-
-         */
     }
 }
 
