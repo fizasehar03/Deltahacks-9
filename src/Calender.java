@@ -8,31 +8,69 @@ import java.util.Calendar;
 
 public class Calender {
 
-
-
     static HashMap<String,Integer> htTime;
     static HashMap<String,Integer> htDay;
 
+    static void printCalendar(String [][] calendar){
+        for (String [] arr: calendar) {
+            for (String element: arr) {
+                System.out.print(element+"\t\t");
+            }
+            System.out.println("");
+        }
+    }
     static void block(String[][] calendar){
         Scanner sc = new Scanner(System.in);
         int continues = 1;
         ArrayList <String> dayString = new ArrayList<>();
         ArrayList<String> startString= new ArrayList<>();
         ArrayList<String> endString= new ArrayList<>();
-        while(continues == 1) {
+        int blocks = 0;
+        while(true) {
             System.out.println("What day would you like to place a block?");
-            dayString.add(sc.next());
-            System.out.println("\nWhat time does this block start?");
-            startString.add(sc.next());
-            System.out.println("\nWhat time does this block end?");
-            endString.add(sc.next());
+            while (true) {
+                String dayCheck = sc.next();
+                if(!htDay.containsKey(dayCheck)){
+                    System.out.println("Invalid day, please use the first three letters of the day in all caps to input a day");
+                }else{
+                    System.out.println("\nNOTE FOR TIMING: Please select a time between 12:00am and 11:30pm");
+                    System.out.println("Format: xx:00/xx:30 am/pm (eg. 12:30am, 4:00pm)");
+                    dayString.add(dayCheck);
+                    break;
+                }
+            }
+            while(true) {
+                System.out.println("What time does this block start?");
+                String startCheck = sc.next();
+                if(!htTime.containsKey(startCheck)){
+                    System.out.println("Invalid time, please try again");
+                }else{
+                    startString.add(startCheck);
+                    break;
+                }
+            }
+            while(true) {
+                System.out.println("\nWhat time does this block end?");
+                String endCheck = sc.next();
+                if(!htTime.containsKey(endCheck)){
+                    System.out.println("Invalid time, please try again.");
+                } else if (htTime.get(startString.get(blocks)) > htTime.get(endCheck)) {
+                    System.out.println("Can't select a time before the start time.");
+                }else{
+                    endString.add(endCheck);
+                    break;
+                }
+            }
+            block2(startString.get(blocks), endString.get(blocks), dayString.get(blocks), calendar);
+            printCalendar(calendar);
             System.out.println("\nIf you would like to continue please input 1: ");
-            continues = sc.nextInt();
+            if(sc.nextInt() != 1){
+                break;
+            }else{
+                blocks++;
+            }
         }
 
-        for(int i = 0; i<dayString.size(); i++){
-            block2(startString.get(i), endString.get(i), dayString.get(i), calendar);
-        }
     }
 
     public static void block2(String startString, String endString, String dayString, String[][] calendar){
@@ -87,15 +125,9 @@ public class Calender {
             calendar[index][0] = time;
             index++;
         }
-
+        printCalendar(calendar);
         block(calendar);
 
-        for (String [] arr: calendar) {
-            for (String element: arr) {
-                System.out.print(element+"\t\t");
-            }
-            System.out.println("");
-        }
 
         //System.out.println(htTime);
         //System.out.println(htTime.get("12:30am"));
