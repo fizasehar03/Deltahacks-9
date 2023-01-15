@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.Instant;
 import java.util.Date;
+
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 public class Schedule {
@@ -38,7 +39,7 @@ public class Schedule {
             System.out.print("Please enter 1 if you have more assignments: ");
             next = s.nextInt();
         }while(next == 1);
-        
+
     }
 }
 
