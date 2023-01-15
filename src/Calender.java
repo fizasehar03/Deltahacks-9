@@ -1,17 +1,89 @@
 package src;
-import java.util.*;
 
-import java.io.*;
+import src.Assignment.Assignment;
+import src.Schedule;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.Scanner;
-import java.util.Calendar;
 
 
 public class Calender {
 
+    String [][] calendar;
+
+
     static HashMap<String,Integer> htTime;
     static HashMap<String,Integer> htDay;
 
-    static void printCalendar(String [][] calendar){
+
+    void priorityCreation(Assignment assignByDay){
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE");
+        String stringDate = sdf.format(new Date());
+        String currDayStr = stringDate.toUpperCase();
+        currDayStr = currDayStr.replace(".", "");
+        int currDay = htDay.get(currDayStr);
+        f1: for (int i = currDay; i <= assignByDay.getDaysBetween(); i++) {
+            for (int j = 1; j < calendar.length-1; j++) {
+                if(calendar[j][i] == "E" && calendar[j+1][i] == "E"){
+                    if(assignByDay.getHours() <= 0){
+                        break f1;
+                    }else {
+                        calendar[j][i] = assignByDay.getName();
+                        assignByDay.setHours(assignByDay.getHours()-0.5);
+                        if(j==47 && assignByDay.getHours() > 0){
+                            calendar[j+1][i] = assignByDay.getName();
+                            assignByDay.setHours(assignByDay.getHours()-0.5);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        printCalendar();
+    }
+    void weightSort(ArrayList<Assignment> assignments){
+        for (int i =0; i<assignments.size()-1; i++) {
+            for(int j = 0; j<assignments.size()-i-1; j++) {
+                if (assignments.get(j).getWeight() < assignments.get(j+1).getWeight()) {
+                    Assignment temp = assignments.get(j);
+                    assignments.set(j, assignments.get(j + 1));
+                    assignments.set(j + 1, temp);
+                }
+            }
+        }
+    }
+
+    ArrayList<Assignment> lessThanTwoDays(ArrayList<Assignment> assignments){
+        ArrayList<Assignment> assignByDay = new ArrayList<Assignment>();
+        for (Assignment a: assignments) {
+            if(a.getDaysBetween() <= 2){
+                assignByDay.add(a);
+            }else{
+                break;
+            }
+        }
+        return assignByDay;
+    }
+
+    void sortDueDates(ArrayList<Assignment> assignments){
+        for (int i =0; i<assignments.size()-1; i++) {
+            for(int j = 0; j<assignments.size()-i-1; j++) {
+                if (assignments.get(j).getDaysBetween() > assignments.get(j+1).getDaysBetween()) {
+                    Assignment temp = assignments.get(j);
+                    assignments.set(j, assignments.get(j + 1));
+                    assignments.set(j + 1, temp);
+                }
+            }
+        }
+        for (Assignment a: assignments) {
+            System.out.println(a.getDaysBetween());
+        }
+    }
+
+    void printCalendar(){
         for (String [] arr: calendar) {
             for (String element: arr) {
                 System.out.print(element+"\t\t");
@@ -19,7 +91,32 @@ public class Calender {
             System.out.println("");
         }
     }
-    static void block(String[][] calendar){
+    public ArrayList<Assignment> makeAssignment() {
+        Scanner s = new Scanner(System.in);
+        ArrayList<Assignment> assignments = new ArrayList<>();
+        String name, due_date;
+        int weight, hours;
+        int next;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDateTime now = LocalDateTime.now();
+        int i =0;
+
+        do{
+            System.out.print("Please enter the name of the assignment: ");
+            name = s.next();
+            System.out.print("Please enter the weight of assignment (0-100): ");
+            weight=s.nextInt();
+            System.out.print("Please enter the hours needed to complete: ");
+            hours=s.nextInt();
+            System.out.print("Please enter the due date (2023-01-24): ");
+            due_date = s.next();
+            assignments.add(new Assignment(name, due_date, hours, weight));
+            System.out.print("Please enter 1 if you have more assignments: ");
+            next = s.nextInt();
+        }while(next == 1);
+        return assignments;
+    }
+    void block(){
         Scanner sc = new Scanner(System.in);
         int continues = 1;
         ArrayList <String> dayString = new ArrayList<>();
@@ -62,7 +159,7 @@ public class Calender {
                 }
             }
             block2(startString.get(blocks), endString.get(blocks), dayString.get(blocks), calendar);
-            printCalendar(calendar);
+            printCalendar();
             System.out.println("\nIf you would like to continue please input 1: ");
             if(sc.nextInt() != 1){
                 break;
@@ -70,9 +167,7 @@ public class Calender {
                 blocks++;
             }
         }
-
     }
-
     public static void block2(String startString, String endString, String dayString, String[][] calendar){
         int start = htTime.get(startString);
         int end = htTime.get(endString)+1;
@@ -82,8 +177,9 @@ public class Calender {
         }
     }
 
-    public static void main(String a[]) {
-        String [][] calendar = new String[49][8];
+    public Calender() {
+        calendar = new String[49][8];
+        //System.out.println(calendar.length);
         String [] days = {"SUN","MON","TUE","WED","THU","FRI","SAT"};
         String [] times = {"12","1","2","3","4","5","6","7","8","9","10","11"};
         String [] thirtyMinInterval = {"00","30"};
@@ -125,14 +221,7 @@ public class Calender {
             calendar[index][0] = time;
             index++;
         }
-        printCalendar(calendar);
-        block(calendar);
-
-
-        //System.out.println(htTime);
-        //System.out.println(htTime.get("12:30am"));
-        //System.out.println(htDay);
-        //System.out.println(htDay.get("TUE"));
+        printCalendar();
     }
 }
 
